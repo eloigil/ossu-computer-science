@@ -1,6 +1,6 @@
 # Problem Set 1b
 # Name: Eloi Gil
-# Time Spent: 1:30
+# Time Spent: 1
 #
 
 initialBalance = float(input('Enter the outstanding balance on your credit card: '))

@@ -1,6 +1,6 @@
 # Problem Set 1a
 # Name: Eloi Gil
-# Time Spent: 1:30
+# Time Spent: 1
 #
 
 balance = float(input('balance: '))
