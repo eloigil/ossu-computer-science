@@ -2,6 +2,9 @@
 #
 # Successive Approximation
 #
+# Name: Eloi Gil
+# Collaborators:
+# Time Spent: 2h
 
 def evaluate_poly(poly, x):
     """
@@ -17,7 +20,19 @@ def evaluate_poly(poly, x):
     x: number
     returns: float
     """
-    # TO DO ... 
+    # TO DO ...
+
+    index = float(len(poly)) - 1.0
+    res = 0.0
+    
+    for mono in poly:
+        monoRes = poly[int(index)] * (x ** int(index))
+        res += monoRes
+        index -= 1.0
+
+    return res
+
+print(evaluate_poly((0.0, 0.0, 5.0, 9.3, 7.0), -13.0))
 
 
 def compute_deriv(poly):
@@ -33,7 +48,21 @@ def compute_deriv(poly):
     poly: tuple of numbers, length > 0
     returns: tuple of numbers
     """
-    # TO DO ... 
+    # TO DO ...
+
+    length = float(len(poly)) - 1.0
+    index = 0.0
+    der = []
+    
+    for mono in poly:
+        monoDer = index * mono
+        if index > 0.0:
+            der.append(monoDer)
+        index += 1.0
+
+    return tuple(der)
+
+print(compute_deriv((-13.39, 0.0, 17.5, 3.0, 1.0)))
 
 def compute_root(poly, x_0, epsilon):
     """
@@ -55,5 +84,24 @@ def compute_root(poly, x_0, epsilon):
     epsilon: float > 0
     returns: tuple (float, int)
     """
-    # TO DO ... 
+    # TO DO ...
+
+    # Xn+1 = Xn - f(Xn)/f'(Xn).
+
+    steps = 0
+    x = x_0
+
+    while steps >= 0:
+        steps += 1
+        res = x - (evaluate_poly(poly, x) / evaluate_poly(compute_deriv(poly), x))
+        if (x - epsilon < res and res < x + epsilon):
+            break
+        else:
+            x = res
+
+    return (x, steps)
+        
+        
+print(compute_root((-13.39, 0.0, 17.5, 3.0, 1.0), 0.1, 0.0001))
+        
 
