@@ -22,22 +22,24 @@ SCRABBLE_LETTER_VALUES = {
 
 WORDLIST_FILENAME = "words.txt"
 
+
 def load_words():
     """
     Returns a list of valid words. Words are strings of lowercase letters.
-    
+
     Depending on the size of the word list, this function may
     take a while to finish.
     """
-    print "Loading word list from file..."
+    print("Loading word list from file...")
     # inFile: file
     inFile = open(WORDLIST_FILENAME, 'r', 0)
     # wordlist: list of strings
     wordlist = []
     for line in inFile:
         wordlist.append(line.strip().lower())
-    print "  ", len(wordlist), "words loaded."
+    print("  "), len(wordlist), "words loaded."
     return wordlist
+
 
 def get_frequency_dict(sequence):
     """
@@ -51,9 +53,9 @@ def get_frequency_dict(sequence):
     # freqs: dictionary (element_type -> int)
     freq = {}
     for x in sequence:
-        freq[x] = freq.get(x,0) + 1
+        freq[x] = freq.get(x, 0) + 1
     return freq
-	
+
 
 # (end of helper code)
 # -----------------------------------
@@ -66,21 +68,37 @@ def get_word_score(word, n):
     Returns the score for a word. Assumes the word is a
     valid word.
 
-	The score for a word is the sum of the points for letters
-	in the word multiplied by the length of the word, plus 50
-	points if all n letters are used on the first go.
+        The score for a word is the sum of the points for letters
+        in the word multiplied by the length of the word, plus 50
+        points if all n letters are used on the first go.
 
-	Letters are scored as in Scrabble; A is worth 1, B is
-	worth 3, C is worth 3, D is worth 2, E is worth 1, and so on.
+        Letters are scored as in Scrabble; A is worth 1, B is
+        worth 3, C is worth 3, D is worth 2, E is worth 1, and so on.
 
     word: string (lowercase letters)
     returns: int >= 0
     """
     # TO DO...
-    
+    score = 0
+    print('the__word', word)
+    print('the__n', n)
+    # print('the__values', SCRABBLE_LETTER_VALUES)
+
+    for letter in word:
+        score += SCRABBLE_LETTER_VALUES[letter]
+
+    score *= len(word)
+
+    if len(word) == n:
+        score += 50
+
+    return score
+
 #
 # Make sure you understand how this function works and what it does!
 #
+
+
 def display_hand(hand):
     """
     Displays the letters currently in the hand.
@@ -95,12 +113,14 @@ def display_hand(hand):
     """
     for letter in hand.keys():
         for j in range(hand[letter]):
-             print letter,              # print all on the same line
+            print letter,              # print all on the same line
     print                               # print an empty line
 
 #
 # Make sure you understand how this function works and what it does!
 #
+
+
 def deal_hand(n):
     """
     Returns a random hand containing n lowercase letters.
@@ -113,28 +133,30 @@ def deal_hand(n):
     n: int >= 0
     returns: dictionary (string -> int)
     """
-    hand={}
+    hand = {}
     num_vowels = n / 3
-    
+
     for i in range(num_vowels):
-        x = VOWELS[random.randrange(0,len(VOWELS))]
+        x = VOWELS[random.randrange(0, len(VOWELS))]
         hand[x] = hand.get(x, 0) + 1
-        
-    for i in range(num_vowels, n):    
-        x = CONSONANTS[random.randrange(0,len(CONSONANTS))]
+
+    for i in range(num_vowels, n):
+        x = CONSONANTS[random.randrange(0, len(CONSONANTS))]
         hand[x] = hand.get(x, 0) + 1
-        
+
     return hand
 
 #
 # Problem #2: Update a hand by removing letters
 #
+
+
 def update_hand(hand, word):
     """
     Assumes that 'hand' has all the letters in word.
-	In other words, this assumes that however many times
-	a letter appears in 'word', 'hand' has at least as
-	many of that letter in it. 
+        In other words, this assumes that however many times
+        a letter appears in 'word', 'hand' has at least as
+        many of that letter in it.
 
     Updates the hand: uses up the letters in the given word
     and returns the new hand, without those letters in it.
@@ -142,25 +164,45 @@ def update_hand(hand, word):
     Has no side effects: does not modify hand.
 
     word: string
-    hand: dictionary (string -> int)    
+    hand: dictionary (string -> int)
     returns: dictionary (string -> int)
     """
+
     # TO DO ...
+    wordLetters = get_frequency_dict(word)
+    newHand = {}
+    for letter in hand:
+        newHand[letter] = hand[letter] - wordLetters.get(letter, 0)
+
+    return newHand
 
 #
 # Problem #3: Test word validity
 #
+
+
 def is_valid_word(word, hand, word_list):
     """
     Returns True if word is in the word_list and is entirely
     composed of letters in the hand. Otherwise, returns False.
     Does not mutate hand or word_list.
-    
+
     word: string
     hand: dictionary (string -> int)
     word_list: list of lowercase strings
     """
     # TO DO...
+
+    if word not in word_list:
+        return False
+
+    wordLetters = get_frequency_dict(word)
+    for letter in wordLetters:
+        if wordLetters.get(letter, 0) > hand.get(letter, 0):
+            return False
+
+    return True
+
 
 def calculate_handlen(hand):
     handlen = 0
@@ -171,13 +213,14 @@ def calculate_handlen(hand):
 #
 # Problem #4: Playing a hand
 #
-def play_hand(hand, word_list):
 
+
+def play_hand(hand, word_list):
     """
     Allows the user to play the given hand, as follows:
 
     * The hand is displayed.
-    
+
     * The user may input a word.
 
     * An invalid word is rejected, and a message is displayed asking
@@ -197,14 +240,16 @@ def play_hand(hand, word_list):
 
       hand: dictionary (string -> int)
       word_list: list of lowercase strings
-      
+
     """
     # TO DO ...
 
 #
 # Problem #5: Playing a game
 # Make sure you understand how this code works!
-# 
+#
+
+
 def play_game(word_list):
     """
     Allow the user to play an arbitrary number of hands.
@@ -221,6 +266,17 @@ def play_game(word_list):
     * If the user inputs anything else, ask them again.
     """
     # TO DO...
+    command = raw_input("n' or 'r' or 'e': ")
+
+    if (command == 'n'):
+        print "This is Case n"
+    elif (command == 'r'):
+        print " This is Case r"
+    elif (command == 'e'):
+        return
+    else:
+        play_game(word_list)
+
 
 #
 # Build data structures used for entire session and play game
